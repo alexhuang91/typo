@@ -18,7 +18,6 @@ dbfile = File.expand_path("../config/database.yml", __FILE__)
 #    raise "Don't know what gem to use for adapter #{adapter}"
 #  end
 #end
-
 group :production do
   gem 'pg'
 end
@@ -50,4 +49,9 @@ group :development, :test do
   gem 'rspec-rails', '>= 2.0.0.beta.20'
   gem 'simplecov', :require => false
   gem 'sqlite3'
+  gem 'cucumber-rails'
+  gem 'cucumber-rails-training-wheels'
+  gem 'database_cleaner'
+  gem 'capybara'
+  gem 'launchy'
 end
