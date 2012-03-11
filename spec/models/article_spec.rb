@@ -25,6 +25,26 @@ describe Article do
     a = Article.new
     assert_equal [:body, :extended], a.content_fields
   end
+  
+  #HW5: ARTICLE MERGING TESTS
+# 1. Non-admin cannot merge articles
+# 2. When articles are merged, the merged article should contain both the text of both previous articles
+# 3. When articles are merged, the merged article should have one author
+# 4. Comments on each of the two original articles need to all carry over and point to the new, merged article
+  describe "article merge" do
+    it "fails without admin priviledges" do
+      pending "article merge"
+    end
+    it "gives both texts from previous articles" do
+      pending "article merge"
+    end
+    it "should have one author" do
+      pending "article merge"
+    end
+    it "should have comments from each of the two original articles" do
+      pending "article merge"
+    end
+  end
 
   describe "#permalink_url" do
     describe "with hostname" do
