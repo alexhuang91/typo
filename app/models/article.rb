@@ -73,6 +73,25 @@ class Article < Content
     end
   end
 
+
+
+  #HW5 merge_with(other_article_id)
+  def merge_with(other_article_id)
+    if Article.exists?(other_article_id)
+      otherArticle = Article.find(other_article_id)
+      body = self.body + otherArticle.body
+      comments = self.comments
+      otherArticle.comments.each do |comment|
+        comments << comment
+      end
+      self.update_attributes(:body => body, :comments => comments)
+      Article.delete(other_article_id)
+    end
+  end
+
+
+
+
   def has_child?
     Article.exists?({:parent_id => self.id})
   end
