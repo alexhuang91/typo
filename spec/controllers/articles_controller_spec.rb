@@ -20,7 +20,30 @@ describe ArticlesController do
             :state => 'active')
     Factory(:blog, :custom_tracking_field => '<script src="foo.js" type="text/javascript"></script>') 
   end
-
+  
+  #HW5: ARTICLE MERGING TESTS
+  # 1. Non-admin cannot merge articles
+  # 2. When articles are merged, the merged article should contain both the text of both previous articles
+  # 3. When articles are merged, the merged article should have one author
+  # 4. Comments on each of the two original articles need to all carry over and point to the new, merged article
+  describe "merge action" do
+    before do
+      article1 = Article.create!()
+      article2 = Article.create!()
+    end
+    it "fails without admin priviledges" do
+      pending "article merge"
+    end
+    it "gives both texts from previous articles" do
+      pending "article merge"
+    end
+    it "should have one author" do
+      pending "article merge"
+    end
+    it "should have comments from each of the two original articles" do
+      pending "article merge"
+    end
+  end
 
   it "should redirect category to /categories" do
     get 'category'
