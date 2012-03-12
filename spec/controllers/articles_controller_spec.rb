@@ -27,9 +27,9 @@ describe ArticlesController do
   # 3. When articles are merged, the merged article should have one author
   # 4. Comments on each of the two original articles need to all carry over and point to the new, merged article
   describe "merge action" do
-    before do
-      article1 = Article.create!()
-      article2 = Article.create!()
+    before :each do
+      @article1 = Factory.create(:article, :title => "a1", :body => "body1")
+      @article2 = Factory.create(:article, :title => "a2", :body => "body2 ")
     end
     it "fails without admin priviledges" do
       pending "article merge"
