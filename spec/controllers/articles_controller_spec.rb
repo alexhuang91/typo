@@ -29,7 +29,7 @@ describe ArticlesController do
   describe "merge action" do
     before :each do
       @article1 = Factory.create(:article, :title => "a1", :body => "body1")
-      @article2 = Factory.create(:article, :title => "a2", :body => "body2 ")
+      @article2 = Factory.create(:article, :title => "a2", :body => "body2")
     end
     it "fails without admin priviledges" do
       pending "article merge"
