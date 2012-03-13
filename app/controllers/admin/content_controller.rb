@@ -61,7 +61,7 @@ class Admin::ContentController < Admin::BaseController
     else
       flash[:error] = _("Error, Article was unsuccessfully merged. You either have insufficient permissions to merge or article may not exist.")
     end
-    redirect_to :action => 'edit'
+    redirect_to :action => 'edit', :id => id1
   end
 
   def insert_editor
