@@ -54,12 +54,12 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     id1 = params[:id]
-    id2 = params[:otherId]
+    id2 = params[:other_id]
     if current_user.admin? && Article.exists?(id1) && Article.exists?(id2)
       Article.find(id1).merge_with(id2)
-      flash[:notice] => "Article was successfully merged"
+      flash[:notice] = _("Article was successfully merged")
     else
-      flash[:error] => "Error, Article was unsuccessfully merged. You either have insufficient permissions to merge or article may not exist."
+      flash[:error] = _("Error, Article was unsuccessfully merged. You either have insufficient permissions to merge or article may not exist.")
     end
     redirect_to :action => 'edit'
   end
