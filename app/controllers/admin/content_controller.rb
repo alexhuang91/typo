@@ -52,6 +52,18 @@ class Admin::ContentController < Admin::BaseController
     redirect_to :action => 'index'
   end
 
+  def merge
+    id1 = params[:id]
+    id2 = params[:otherId]
+    if current_user.admin? && Article.exists?(id1) && Article.exists?(id2)
+      Article.find(id1).merge_with(id2)
+      flash[:notice] => "Article was successfully merged"
+    else
+      flash[:error] => "Error, Article was unsuccessfully merged. You either have insufficient permissions to merge or article may not exist."
+    end
+    redirect_to :action => 'edit'
+  end
+
   def insert_editor
     editor = 'visual'
     editor = 'simple' if params[:editor].to_s == 'simple'
