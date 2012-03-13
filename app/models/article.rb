@@ -76,8 +76,9 @@ class Article < Content
 
 
   #HW5 merge_with(other_article_id)
+  #Merges if other article exists AND is different than current article
   def merge_with(other_article_id)
-    if Article.exists?(other_article_id)
+    if Article.exists?(other_article_id) && other_article_id != self.id
       otherArticle = Article.find(other_article_id)
       body = self.body + otherArticle.body
       comments = self.comments
