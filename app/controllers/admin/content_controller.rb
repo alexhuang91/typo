@@ -55,7 +55,7 @@ class Admin::ContentController < Admin::BaseController
   def merge
     id1 = params[:id]
     id2 = params[:other_id]
-    if current_user.admin? && Article.exists?(id1) && Article.exists?(id2)
+    if (current_user.admin? and Article.exists?(id1) and Article.exists?(id2) and id1 != id2)
       Article.find(id1).merge_with(id2)
       flash[:notice] = _("Article was successfully merged")
     else
