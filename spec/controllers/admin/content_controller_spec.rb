@@ -3,6 +3,56 @@ require 'spec_helper'
 describe Admin::ContentController do
   render_views
 
+  #HW5: ARTICLE MERGING TESTS
+  # 1. Non-admin cannot merge articles
+  # 2. When articles are merged, the merged article should contain both the text of both previous articles
+  # 3. When articles are merged, the merged article should have one author
+  # 4. Comments on each of the two original articles need to all carry over and point to the new, merged article
+
+  shared_examples_for 'merge action' do
+    before :each do
+      Factory(:blog)
+      Profile.delete_all
+      @article1 = Factory(:article, :title => "a1", :body => "body1", :id => 1)
+      @article2 = Factory(:article, :title => "a2", :body => "body2", :id => 2)
+      @person1 = Factory(:user, :text_filter => Factory(:markdown), :profile => Factory(:profile_admin, :label => Profile::ADMIN))
+      @person2 = Factory(:user, :text_filter => Factory(:markdown), :profile => Factory(:profile_publisher))
+      Article.stub(:find).with(1).and_return(@article1)
+      Article.stub(:exists?).with(1).and_return(true)
+      Article.stub(:exists?).with(2).and_return(true)
+      Article.stub(:exists?).with(3).and_return(false)
+      Article.stub(:exists?).with(4).and_return(false)
+      User.stub(:admin?).with(@person1).and_return(true)
+      User.stub(:admin?).with(@person2).and_return(false)
+    end
+
+    it "should call merge if current user is an admin and the distinct articles exist" do
+      Article.should_receive(:merge_with).and_return(1)
+      request.session = { :user => @person1.id }
+      get(:merge, :id =>@person1.id, :other_id => 2)
+    end
+
+    it "should not call merge if the current user is an admin but the articles are the same article" do
+      Article.should_not_receive(:merge_with)
+      request.session = { :user => @person1.id }
+      get( :merge, :id => 1, params => {:id => 1, :other_id => 3})
+    end
+
+    it "should not call merge if the current user is an admin but one of the articles doesn't exist" do
+      Article.should_not_receive(:merge_with)
+      request.session = { :user => @person1.id }
+      get({:action => :merge, :id => 3}, {:id => 3, :other_id => 1})
+      get :merge, {:id => 1, :other_id => 3}
+      get :merge, {:id => 3, :other_id => 4}
+    end
+
+    it "should not call merge if its called by a non-admin" do
+      Article.should_not_receive(:merge_with)
+      request.session = { :user => @person2.id }
+      get :merge, {:id => 1, :other_id => 2}
+    end
+  end
+
   # Like it's a shared, need call everywhere
   shared_examples_for 'index action' do
 
