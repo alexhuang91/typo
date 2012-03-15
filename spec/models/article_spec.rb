@@ -14,6 +14,47 @@ describe Article do
     @articles = []
   end
 
+
+#HW5 Article model tests
+  describe "Article Merge Tests" do
+    before :each do
+      @title1 = "title1"
+      art1 = Article.new(:body => "article1", :title => @title1)
+      art1.save
+      @id1 = art1.id
+      art2 = Article.new(:body => "article2", :title => "title2")
+      art2.save
+      @id2 = art2.id
+      @comment1 = Comment.new(:author => 'Bob', :article => Article.find(art1.id), :body => 'comment 1', :ip => '1.2.3.4')
+      @comment1.save
+      @comment2 = Comment.new(:author => 'Bob', :article => Article.find(art2.id), :body => 'comment 2', :ip => '1.2.3.4')
+      @comment2.save
+      @mergedbody = art1.body + art2.body
+    end
+    describe "after merge method call" do
+      before :each do
+        Article.find(@id1).merge_with(@id2)
+      end
+      it "should not have art2" do
+        lambda {Article.find(@id2)}.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+      it "should merge body" do
+        Article.find(@id1).body.should == @mergedbody
+      end
+      it "should have first title" do
+        Article.find(@id1).title.should == @title1
+      end
+      it "should still have 2nd comment in db" do
+        lambda{ Comment.find(@comment2.id)}.should_not raise_exception(ActiveRecord::RecordNotFound)
+      end
+      it "should have 2nd Article's comment be tied to first article" do
+        Comment.find(@comment2.id).article.should == Article.find(@id1)
+      end
+    end
+  end
+
+
+
   def assert_results_are(*expected)
     assert_equal expected.size, @articles.size
     expected.each do |i|
