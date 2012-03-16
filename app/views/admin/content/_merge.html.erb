@@ -1,0 +1,9 @@
+<div class='admin-merge'>
+  <h4><%= _("Merging") %></h4>
+  <p class='help-block'>Merge a similar article using its article ID here</p>
+  <%= form_tag({:controller => :content, :action => :merge, :id => @article.id}, :method => "post") do %>
+    <%= label_tag(:other_id, "Article ID:") %>
+    <%= text_field_tag(:other_id) %>
+    <%= submit_tag("Merge") %>
+  <% end %>
+</div>
